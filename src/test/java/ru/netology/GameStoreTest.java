@@ -71,7 +71,7 @@ public class GameStoreTest {
 
         String actual = store.getMostPlayer();
         String expected = null;
-        assertEquals(expected, actual);
+        assertEquals(null, actual);
     }
 
     @Test
