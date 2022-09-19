@@ -19,6 +19,7 @@ public class GameStore {
      * Создание объекта игры с заданными заголовком и жанром
      * Каждый объект игры помнит объект каталога, которому она принадлежит
      */
+
     public Game publishGame(String title, String genre) {
         Game game = new Game(title, genre, this);
         games.add(game);
@@ -29,9 +30,10 @@ public class GameStore {
      * Проверяет наличие игры в каталоге и возврашает true
      * если игра есть и false иначе
      */
+
     public boolean containsGame(Game game) {
-        for (int i = 1; i < games.size(); i++) {
-            if (games.get(i - 1).equals(game)) {
+        for (int i = 0; i < games.size(); i++) {
+            if (games.get(i).equals(game)) {
                 return true;
             }
         }
@@ -43,9 +45,10 @@ public class GameStore {
      * за игрой этого каталога. Игрок задаётся по имени. Время должно
      * суммироваться с прошлым значением для этого игрока
      */
+
     public void addPlayTime(String playerName, int hours) {
         if (playedTime.containsKey(playerName)) {
-            playedTime.put(playerName, playedTime.get(playerName));
+            playedTime.put(playerName, playedTime.get(playerName) + hours);
         } else {
             playedTime.put(playerName, hours);
         }
@@ -72,7 +75,12 @@ public class GameStore {
      * Суммирует общее количество времени всех игроков, проведённого
      * за играми этого каталога
      */
+
     public int getSumPlayedTime() {
-        return 0;
+        int sumPlayTime = 0;
+        for (Integer h : playedTime.values()) {
+            sumPlayTime += h;
+        }
+        return sumPlayTime;
     }
 }
