@@ -47,7 +47,23 @@ public class GameStoreTest {
         store.addPlayTime("Igrok 3", 7);
         store.addPlayTime("Igrok 2", 5);
 
-        Assertions.assertEquals("Igrok 2", store.getMostPlayer());
+        String[] expected = {"Igrok 2"};
+
+        Assertions.assertArrayEquals(expected, store.getMostPlayer());
+    }
+
+    @Test
+    public void shouldGetMostPlayerIfSameTimeForDifferentPlayers() {
+
+        store.addPlayTime("Igrok 1", 2);
+        store.addPlayTime("Igrok 2", 3);
+        store.addPlayTime("Igrok 3", 7);
+        store.addPlayTime("Igrok 2", 5);
+        store.addPlayTime("Igrok 4", 8);
+
+        String[] expected = {"Igrok 4", "Igrok 2"};
+
+        Assertions.assertArrayEquals(expected, store.getMostPlayer());
     }
 
     @Test
