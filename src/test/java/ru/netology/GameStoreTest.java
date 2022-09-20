@@ -5,69 +5,157 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-
 public class GameStoreTest {
-    GameStore store = new GameStore();
 
     @Test
     public void shouldAddGame() {
 
-        Game game = store.publishGame("Igra 1", "Arcade");
+        GameStore store = new GameStore();
+        Game game = store.publishGame("Нетология Баттл Онлайн", "Аркады");
+
         assertTrue(store.containsGame(game));
     }
 
+    // другие ваши тесты
+
     @Test
-    public void shouldGetSumPlayedTime() {
+    public void shouldReturnFalseAddGames() {
 
-        store.addPlayTime("Igrok 1", 2);
-        store.addPlayTime("Igrok 2", 3);
-        store.addPlayTime("Igrok 3", 18);
-        store.addPlayTime("Igrok 2", 4);
+        GameStore store = new GameStore();
+        Game game = store.publishGame("Нетология Баттл Онлайн", "Аркады");
+        Game game2 = new Game("Ищейка", "Стратегия", store);
 
-        Assertions.assertEquals(27, store.getSumPlayedTime());
+        assertFalse(store.containsGame(game2));
     }
 
     @Test
-    public void shouldGetSumPlayedTimeIfOneGamer() {
+    public void shouldReturnFalseContainsGame() {
 
-        store.addPlayTime("Igrok 1", 2);
-        store.addPlayTime("Igrok 1", 3);
-        store.addPlayTime("Igrok 1", 18);
-        store.addPlayTime("Igrok 1", 4);
+        GameStore store = new GameStore();
 
-        Assertions.assertEquals(27, store.getSumPlayedTime());
+        Game game2 = new Game("Ищейка", "Стратегия", store);
+
+        assertFalse(store.containsGame(game2));
     }
 
     @Test
     public void shouldGetMostPlayer() {
 
-        store.addPlayTime("Igrok 1", 2);
-        store.addPlayTime("Igrok 2", 3);
-        store.addPlayTime("Igrok 3", 7);
-        store.addPlayTime("Igrok 2", 5);
+        GameStore store = new GameStore();
 
-        String[] expected = {"Igrok 2"};
+        store.addPlayTime("A", 3);
+        store.addPlayTime("B", 9);
+        store.addPlayTime("C", 6);
 
+        String[] expected = {"B"};
         Assertions.assertArrayEquals(expected, store.getMostPlayer());
     }
 
     @Test
-    public void shouldGetMostPlayerIfSameTimeForDifferentPlayers() {
+    public void shouldGetMostPlayerEqualsZero() {
 
-        store.addPlayTime("Igrok 1", 2);
-        store.addPlayTime("Igrok 2", 3);
-        store.addPlayTime("Igrok 3", 7);
-        store.addPlayTime("Igrok 2", 5);
-        store.addPlayTime("Igrok 4", 8);
+        GameStore store = new GameStore();
+        Game game = store.publishGame("Нетология Баттл Онлайн", "Аркады");
 
-        String[] expected = {"Igrok 4", "Igrok 2"};
+        store.addPlayTime("A", 0);
 
+        String expected = null;
+        assertEquals(expected, store.getMostPlayer());
+    }
+
+    @Test
+    public void shouldGetMostPlayerReturnNull() {
+
+        GameStore store = new GameStore();
+
+        assertNull(store.getMostPlayer());
+    }
+
+    @Test
+    public void shouldReturnNullGetMostPlayerNegativeValue() {
+
+        GameStore store = new GameStore();
+        Game game = store.publishGame("Нетология Баттл Онлайн", "Аркады");
+
+        store.addPlayTime("A", -1);
+
+        assertNull(store.getMostPlayer());
+    }
+
+    @Test
+    public void shouldRegisteredAddPlayTime() {
+
+        GameStore store = new GameStore();
+
+        store.addPlayTime("A", 0);
+        store.addPlayTime("A", 2);
+
+        String[] expected = {"A"};
         Assertions.assertArrayEquals(expected, store.getMostPlayer());
     }
 
     @Test
-    public void shouldGetMostPlayerWithoutPlayers() {
-        Assertions.assertNull(store.getMostPlayer());
+    public void shouldGetMostPlayerEquallyOne() {
+
+        GameStore store = new GameStore();
+
+        store.addPlayTime("A", 1);
+
+        String[] expected = {"A"};
+        Assertions.assertArrayEquals(expected, store.getMostPlayer());
+    }
+
+    @Test
+    public void shouldGetSumPlayedTime() {
+
+        GameStore store = new GameStore();
+
+        store.addPlayTime("A", 1);
+        store.addPlayTime("B", 4);
+        store.addPlayTime("C", 2);
+
+        int actual = store.getSumPlayedTime();
+        int expected = 7;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldReturnZeroGetSumPlayedTime() {
+
+        GameStore store = new GameStore();
+
+        int actual = store.getSumPlayedTime();
+        int expected = 0;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldGetSumZeroPlayedTime() {
+
+        GameStore store = new GameStore();
+
+        store.addPlayTime("A", 0);
+        store.addPlayTime("Br", 0);
+        store.addPlayTime("C", 0);
+
+        int actual = store.getSumPlayedTime();
+        int expected = 0;
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void shouldGetSumOnePlayedTime() {
+
+        GameStore store = new GameStore();
+
+        store.addPlayTime("A", 0);
+        store.addPlayTime("B", 1);
+        store.addPlayTime("C", 0);
+
+        int actual = store.getSumPlayedTime();
+        int expected = 1;
+        assertEquals(expected, actual);
+
     }
 }
